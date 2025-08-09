@@ -9,7 +9,7 @@ public class Glitch : MonoBehaviour
     public float maxInterval = 3f;
     public float maxGlitchDistance = 5f;
     public bool affectPlayers = true;
-    public bool affectAI = true;
+    
 
     [Header("Visual Effects")]
     public ParticleSystem glitchParticles;
@@ -33,25 +33,6 @@ public class Glitch : MonoBehaviour
                 if (playerRb != null)
                 {
                     allRigidbodies.Add(playerRb);
-                }
-            }
-        }
-        else
-        {
-            Rigidbody rb = GetComponent<Rigidbody>();
-            if (rb != null) allRigidbodies.Add(rb);
-        }
-
-        //Find all AI
-        if (affectAI)
-        {
-            GameObject[] aiPlayers = GameObject.FindGameObjectsWithTag("AI");
-            foreach (GameObject ai in aiPlayers)
-            {
-                Rigidbody aiRb = ai.GetComponent<Rigidbody>();
-                if(aiRb != null)
-                {
-                    allRigidbodies.Add(aiRb);
                 }
             }
         }

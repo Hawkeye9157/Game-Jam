@@ -977,8 +977,6 @@ MonoBehaviour:
   turnSensitivity: 1
   maxSteerAngle: 30
   _centerOfMass: {x: 0, y: -2, z: 0}
-  boostParticles: {fileID: 198663536934198432, guid: bb98861c48ad2024ca93498c7dd93a6c, type: 3}
-  boostLight: {fileID: 0}
   wheels:
   - wheelModel: {fileID: 390230347}
     wheelCollider: {fileID: 608958392}
@@ -1035,8 +1033,7 @@ MonoBehaviour:
   minInterval: 1
   maxInterval: 3
   maxGlitchDistance: 5
-  affectPlayers: 0
-  affectAI: 1
+  affectPlayers: 1
   glitchParticles: {fileID: 0}
   glitchSound: {fileID: 0}
 --- !u!1 &1384204718
