@@ -36,8 +36,8 @@ public class CarController : MonoBehaviour
     private float currentAcceleration;
     private bool isBoosting;
     public float currentSpeed {  get; private set; }
-    
-    
+    public static float CurrentCarSpeed { get; private set; }
+
 
     private void Start()
     {
@@ -73,8 +73,6 @@ public class CarController : MonoBehaviour
 
     void Move()
     {
-        float speed = carRb.linearVelocity.magnitude;
-        float speedMph = speed * 2.237f;
 
         currentAcceleration = isBoosting ? normalMaxAcceleration * boostMultiplier : normalMaxAcceleration;
         
@@ -82,7 +80,7 @@ public class CarController : MonoBehaviour
         foreach (var wheel in wheels)
         {
             
-            wheel.wheelCollider.motorTorque = moveInput * 1000f * currentAcceleration * Time.fixedDeltaTime;
+            wheel.wheelCollider.motorTorque = moveInput * 1000f * currentAcceleration;
         }
 
 
@@ -126,7 +124,8 @@ public class CarController : MonoBehaviour
     void UpdateSpeed()
     {
         currentSpeed = carRb.linearVelocity.magnitude;
-        float speedMph = currentSpeed * 2.237f;
+        CurrentCarSpeed = currentSpeed;
+        
     }
 
 
