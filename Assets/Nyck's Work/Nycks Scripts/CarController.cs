@@ -23,6 +23,7 @@ public class CarController : MonoBehaviour
     public float boostMultiplier;
     public float turnSensitivity = 1.0f;
     public float maxSteerAngle = 30.0f;
+
     public Vector3 _centerOfMass;
 
    
@@ -34,6 +35,9 @@ public class CarController : MonoBehaviour
     private Rigidbody carRb;
     private float currentAcceleration;
     private bool isBoosting;
+    public float currentSpeed {  get; private set; }
+    
+    
 
     private void Start()
     {
@@ -47,7 +51,8 @@ public class CarController : MonoBehaviour
     {
         GetInputs();
         AnimateWheels();
-        
+        UpdateSpeed();
+
     }
 
     private void FixedUpdate()
@@ -70,7 +75,7 @@ public class CarController : MonoBehaviour
     {
         float speed = carRb.linearVelocity.magnitude;
         float speedMph = speed * 2.237f;
-        
+
         currentAcceleration = isBoosting ? normalMaxAcceleration * boostMultiplier : normalMaxAcceleration;
         
         
@@ -116,6 +121,12 @@ public class CarController : MonoBehaviour
                 wheel.wheelCollider.brakeTorque = 0;
             }
         }
+    }
+
+    void UpdateSpeed()
+    {
+        currentSpeed = carRb.linearVelocity.magnitude;
+        float speedMph = currentSpeed * 2.237f;
     }
 
 
