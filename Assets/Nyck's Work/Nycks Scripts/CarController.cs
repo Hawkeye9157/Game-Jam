@@ -68,9 +68,12 @@ public class CarController : MonoBehaviour
 
     void Move()
     {
+        float speed = carRb.linearVelocity.magnitude;
+        float speedMph = speed * 2.237f;
         
         currentAcceleration = isBoosting ? normalMaxAcceleration * boostMultiplier : normalMaxAcceleration;
-
+        
+        
         foreach (var wheel in wheels)
         {
             
