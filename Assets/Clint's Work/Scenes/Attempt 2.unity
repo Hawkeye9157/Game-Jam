@@ -239,6 +239,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Car
       objectReference: {fileID: 0}
+    - target: {fileID: 1740865480142414, guid: 663342408c5e6e24f8e0cb584631c6ad, type: 3}
+      propertyPath: m_TagString
+      value: AI
+      objectReference: {fileID: 0}
     - target: {fileID: 4922170374542132, guid: 663342408c5e6e24f8e0cb584631c6ad, type: 3}
       propertyPath: m_LocalPosition.x
       value: 18.971214
@@ -482,7 +486,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3148308533430019772, guid: a0060358a54d8874dbc53f22d8818853, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -31.4
+      value: -29.5
       objectReference: {fileID: 0}
     - target: {fileID: 3148308533430019772, guid: a0060358a54d8874dbc53f22d8818853, type: 3}
       propertyPath: m_LocalPosition.y
@@ -598,7 +602,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3148308533430019772, guid: a0060358a54d8874dbc53f22d8818853, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.3
+      value: -24.4
       objectReference: {fileID: 0}
     - target: {fileID: 3148308533430019772, guid: a0060358a54d8874dbc53f22d8818853, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1136,9 +1140,13 @@ MonoBehaviour:
   - {fileID: 1282485122}
   - {fileID: 203952011}
   - {fileID: 807613902}
-  reachedTargetDistance: 5
+  reachedTargetDistance: 10
   reverseDistance: 10
-  allowedToMove: 0
+  allowedToMove: 1
+  glitchTimer: 0
+  minGlitchTime: 1
+  maxGlitchTime: 5
+  successRate: 0.5
 --- !u!114 &1757700767
 MonoBehaviour:
   m_ObjectHideFlags: 0

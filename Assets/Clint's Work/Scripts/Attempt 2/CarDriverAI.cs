@@ -10,18 +10,34 @@ public class CarDriverAI : MonoBehaviour
     [SerializeField] public float reverseDistance = 10f;
     private int currentWaypoint = 0;
     public bool allowedToMove = true;
+    public float glitchTimer;
+    public float minGlitchTime = 1f;
+    public float maxGlitchTime = 5f;
+    public float successRate = .50f;
 
     private CarDriver driver;
     private Vector3 targetPosition;
+
+    
 
     private void Awake()
     {
         driver = GetComponent<CarDriver>();
     }
+    private void Start()
+    {
+        glitchTimer = Random.Range(minGlitchTime, maxGlitchTime);
+    }
     private void Update()
     {
         if (allowedToMove)
         {
+            glitchTimer -= Time.deltaTime;
+            if(glitchTimer <= 0)
+            {
+                glitchTimer = Random.Range(minGlitchTime, maxGlitchTime);
+                ApplyGlitch();
+            }
             Move();
         }
         
@@ -73,5 +89,22 @@ public class CarDriverAI : MonoBehaviour
             if (currentWaypoint == waypoints.Count) currentWaypoint = 0;
         }
         driver.SetInputs(forwardAmount, turnAmount);
+    }
+    private void ApplyGlitch()
+    {
+        float chance = Random.Range(0f, 1f);
+        Debug.Log("Chance: " + chance);
+        if(chance > successRate)
+        {
+            //glitch forward
+            transform.position += transform.forward * 10.0f;
+            Debug.Log("Passed");
+        }
+        else
+        {
+            //glitch backward
+            transform.position += -transform.forward * 10.0f;
+            Debug.Log("Failed");
+        }
     }
 }
