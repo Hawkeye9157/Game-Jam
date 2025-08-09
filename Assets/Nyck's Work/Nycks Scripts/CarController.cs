@@ -1,4 +1,3 @@
-using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,9 +6,8 @@ public class CarController : MonoBehaviour
 {
     public enum Axel
     {
-        Front, 
+        Front,
         Rear
-        
     }
 
     [Serializable]
@@ -18,35 +16,42 @@ public class CarController : MonoBehaviour
         public GameObject wheelModel;
         public WheelCollider wheelCollider;
         public Axel axel;
-
     }
 
-    public float maxAcceleration = 30.0f;
+    public float normalMaxAcceleration = 1000.0f;
     public float breakAcceleration = 50.0f;
+    public float boostMultiplier;
     public float turnSensitivity = 1.0f;
     public float maxSteerAngle = 30.0f;
-
     public Vector3 _centerOfMass;
 
-
+    [Header("Visual Feedback")]
+    public ParticleSystem boostParticles;
+    public Light boostLight;
 
     public List<Wheel> wheels;
 
-    float moveInput;
-    float steerInput;
-
+    private float moveInput;
+    private float steerInput;
     private Rigidbody carRb;
+    private float currentAcceleration;
+    private bool isBoosting;
 
     private void Start()
     {
         carRb = GetComponent<Rigidbody>();
         carRb.centerOfMass = _centerOfMass;
+        currentAcceleration = normalMaxAcceleration;
+
+        if (boostParticles != null) boostParticles.Stop();
+        if (boostLight != null) boostLight.enabled = false;
     }
 
     private void Update()
     {
         GetInputs();
         AnimateWheels();
+        HandleBoostEffects();
     }
 
     private void FixedUpdate()
@@ -60,14 +65,20 @@ public class CarController : MonoBehaviour
     {
         moveInput = Input.GetAxis("Vertical");
         steerInput = Input.GetAxis("Horizontal");
-    }
 
+        // Check for boost input
+        isBoosting = Input.GetKey(KeyCode.LeftShift);
+    }
 
     void Move()
     {
+        
+        currentAcceleration = isBoosting ? normalMaxAcceleration * boostMultiplier : normalMaxAcceleration;
+
         foreach (var wheel in wheels)
         {
-            wheel.wheelCollider.motorTorque = moveInput * 150 * maxAcceleration;
+            
+            wheel.wheelCollider.motorTorque = moveInput * 1000f * currentAcceleration * Time.fixedDeltaTime;
         }
     }
 
@@ -75,7 +86,7 @@ public class CarController : MonoBehaviour
     {
         foreach (var wheel in wheels)
         {
-            if(wheel.axel == Axel.Front)
+            if (wheel.axel == Axel.Front)
             {
                 var _steerAngle = steerInput * turnSensitivity * maxSteerAngle;
                 wheel.wheelCollider.steerAngle = Mathf.Lerp(wheel.wheelCollider.steerAngle, _steerAngle, 0.6f);
@@ -85,11 +96,12 @@ public class CarController : MonoBehaviour
 
     void Break()
     {
+       
         if (Input.GetKey(KeyCode.Space))
         {
             foreach (var wheel in wheels)
             {
-                wheel.wheelCollider.brakeTorque = breakAcceleration * 300;
+                wheel.wheelCollider.brakeTorque = breakAcceleration * 10000;
             }
         }
         else
@@ -101,18 +113,38 @@ public class CarController : MonoBehaviour
         }
     }
 
+    void HandleBoostEffects()
+    {
+        
+        if (isBoosting)
+        {
+            Debug.Log("BOOST ACTIVATED! Current speed: " + carRb.linearVelocity.magnitude);
+
+            if (boostParticles != null && !boostParticles.isPlaying)
+                boostParticles.Play();
+
+            if (boostLight != null)
+                boostLight.enabled = true;
+        }
+        else
+        {
+            if (boostParticles != null && boostParticles.isPlaying)
+                boostParticles.Stop();
+
+            if (boostLight != null)
+                boostLight.enabled = false;
+        }
+    }
 
     void AnimateWheels()
     {
         foreach (var wheel in wheels)
         {
-        Quaternion rot;
-        Vector3 pos;
-        wheel.wheelCollider.GetWorldPose(out pos, out rot);
-        wheel.wheelModel.transform.position = pos;
-        wheel.wheelModel.transform.rotation = rot;
-
+            Quaternion rot;
+            Vector3 pos;
+            wheel.wheelCollider.GetWorldPose(out pos, out rot);
+            wheel.wheelModel.transform.position = pos;
+            wheel.wheelModel.transform.rotation = rot;
         }
     }
-
 }

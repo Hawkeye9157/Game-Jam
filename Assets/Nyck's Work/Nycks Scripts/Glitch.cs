@@ -1,28 +1,113 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Glitch : MonoBehaviour
 {
-    public float glitchForce = 10f; 
-    public float glitchInterval = 2f; 
-    private Rigidbody rb;
+    [Header("Glitch Settings")]
+    public float glitchForce = 10f;
+    public float minInterval = 1f;
+    public float maxInterval = 3f;
+    public float maxGlitchDistance = 5f;
+    public bool affectPlayers = true;
+    public bool affectAI = true;
+
+    [Header("Visual Effects")]
+    public ParticleSystem glitchParticles;
+    public AudioSource glitchSound;
+
+    private float nextGlitchTime;
+    private List<Rigidbody> allRigidbodies = new List<Rigidbody>();
 
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
-        InvokeRepeating("ApplyRandomGlitch", glitchInterval, glitchInterval);
+        // Initialize with first glitch time
+        SetNextGlitchTime();
+
+        // Find all players in the scene
+        if (affectPlayers)
+        {
+            GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+            foreach (GameObject player in players)
+            {
+                Rigidbody playerRb = player.GetComponent<Rigidbody>();
+                if (playerRb != null)
+                {
+                    allRigidbodies.Add(playerRb);
+                }
+            }
+        }
+        else
+        {
+            Rigidbody rb = GetComponent<Rigidbody>();
+            if (rb != null) allRigidbodies.Add(rb);
+        }
+
+        //Find all AI
+        if (affectAI)
+        {
+            GameObject[] aiPlayers = GameObject.FindGameObjectsWithTag("AI");
+            foreach (GameObject ai in aiPlayers)
+            {
+                Rigidbody aiRb = ai.GetComponent<Rigidbody>();
+                if(aiRb != null)
+                {
+                    allRigidbodies.Add(aiRb);
+                }
+            }
+        }
+        else
+        {
+            Rigidbody rb = GetComponent<Rigidbody>();
+            if (rb != null) allRigidbodies.Add(rb);
+        }
+        
     }
 
-    void ApplyRandomGlitch()
+    void Update()
     {
-        
-        Vector3 randomDirection = transform.forward + new Vector3(
-            Random.Range(0, 1000.5f),
-            0,
-           0
-        ).normalized;
+        if (Time.time >= nextGlitchTime)
+        {
+            ApplyGlitchEffect();
+            SetNextGlitchTime();
+        }
+    }
 
-        
-        
-        transform.position += randomDirection * glitchForce;
+    void SetNextGlitchTime()
+    {
+        nextGlitchTime = Time.time + Random.Range(minInterval, maxInterval);
+    }
+
+    void ApplyGlitchEffect()
+    {
+        foreach (Rigidbody bodies in allRigidbodies)
+        {
+            if (bodies != null)
+            {
+                
+                Vector3 glitchDirection = new Vector3(
+                    Random.Range(-1f, 1f),
+                    0,
+                     Random.Range(-1f, 1f)
+                ).normalized;
+
+                
+                float distanceFactor = Mathf.Clamp01(glitchForce / maxGlitchDistance);
+                float actualForce = Mathf.Lerp(glitchForce * 0.5f, glitchForce, distanceFactor);
+
+                // Apply the glitch
+                bodies.MovePosition(bodies.position + glitchDirection * actualForce);
+
+                // Visual/Audio effects
+                if (glitchParticles != null)
+                {
+                    Instantiate(glitchParticles, bodies.position, Quaternion.identity);
+                }
+
+                if (glitchSound != null)
+                {
+                    AudioSource.PlayClipAtPoint(glitchSound.clip, bodies.position);
+                }
+            }
+        }
     }
 }

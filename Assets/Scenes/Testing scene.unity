@@ -269,7 +269,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 5000
   m_UseColorTemperature: 1
-  m_BoundingSphereOverride: {x: 2.712698e-20, y: 5.51118e-40, z: 1.57e-42, w: 3.93419e+12}
+  m_BoundingSphereOverride: {x: 1.675e-42, y: 2.524355e-29, z: 0, w: 2.75551e-40}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ForceVisible: 0
@@ -626,7 +626,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2082061792772580833, guid: 07f9514859838be488c0cdcfc1215750, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -95.95999
+      value: -96.43
       objectReference: {fileID: 0}
     - target: {fileID: 2082061792772580833, guid: 07f9514859838be488c0cdcfc1215750, type: 3}
       propertyPath: m_LocalRotation.w
@@ -650,7 +650,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2084765905579094211, guid: 07f9514859838be488c0cdcfc1215750, type: 3}
       propertyPath: m_TagString
-      value: Player
+      value: AI
       objectReference: {fileID: 0}
     - target: {fileID: 2622560501485269055, guid: 07f9514859838be488c0cdcfc1215750, type: 3}
       propertyPath: m_LocalPosition.x
@@ -795,6 +795,10 @@ PrefabInstance:
     - target: {fileID: 7345930663632426919, guid: 07f9514859838be488c0cdcfc1215750, type: 3}
       propertyPath: m_SidewaysFriction.m_AsymptoteValue
       value: 0.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 8691983108858534857, guid: 07f9514859838be488c0cdcfc1215750, type: 3}
+      propertyPath: m_TagString
+      value: AI
       objectReference: {fileID: 0}
     - target: {fileID: 9148761254659456536, guid: 07f9514859838be488c0cdcfc1215750, type: 3}
       propertyPath: m_Mass
@@ -967,11 +971,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab4b8924c66cff0429d58c665a40c710, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxAcceleration: 30
-  breakAcceleration: 80
+  normalMaxAcceleration: 100
+  breakAcceleration: 100
+  boostMultiplier: 500
   turnSensitivity: 1
   maxSteerAngle: 30
   _centerOfMass: {x: 0, y: -2, z: 0}
+  boostParticles: {fileID: 198663536934198432, guid: bb98861c48ad2024ca93498c7dd93a6c, type: 3}
+  boostLight: {fileID: 0}
   wheels:
   - wheelModel: {fileID: 390230347}
     wheelCollider: {fileID: 608958392}
@@ -1025,7 +1032,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   glitchForce: 10
-  glitchInterval: 2
+  minInterval: 1
+  maxInterval: 3
+  maxGlitchDistance: 5
+  affectPlayers: 0
+  affectAI: 1
+  glitchParticles: {fileID: 0}
+  glitchSound: {fileID: 0}
 --- !u!1 &1384204718
 GameObject:
   m_ObjectHideFlags: 0
@@ -1289,7 +1302,7 @@ Transform:
   m_GameObject: {fileID: 1648064188}
   serializedVersion: 2
   m_LocalRotation: {x: -0.005992743, y: -0.9819769, z: 0.18630928, w: -0.031213628}
-  m_LocalPosition: {x: -0.2026364, y: 0.5051086, z: 4.2484517}
+  m_LocalPosition: {x: -0.26, y: 0.5051086, z: 5.29}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
