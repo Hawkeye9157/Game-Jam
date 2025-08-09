@@ -25,9 +25,7 @@ public class CarController : MonoBehaviour
     public float maxSteerAngle = 30.0f;
     public Vector3 _centerOfMass;
 
-    [Header("Visual Feedback")]
-    public ParticleSystem boostParticles;
-    public Light boostLight;
+   
 
     public List<Wheel> wheels;
 
@@ -43,15 +41,13 @@ public class CarController : MonoBehaviour
         carRb.centerOfMass = _centerOfMass;
         currentAcceleration = normalMaxAcceleration;
 
-        if (boostParticles != null) boostParticles.Stop();
-        if (boostLight != null) boostLight.enabled = false;
     }
 
     private void Update()
     {
         GetInputs();
         AnimateWheels();
-        HandleBoostEffects();
+        
     }
 
     private void FixedUpdate()
@@ -79,6 +75,12 @@ public class CarController : MonoBehaviour
         {
             
             wheel.wheelCollider.motorTorque = moveInput * 1000f * currentAcceleration * Time.fixedDeltaTime;
+        }
+
+
+        if (isBoosting)
+        {
+            Debug.Log("BOOST ACTIVATED! Current speed: " + carRb.linearVelocity.magnitude);
         }
     }
 
@@ -113,28 +115,6 @@ public class CarController : MonoBehaviour
         }
     }
 
-    void HandleBoostEffects()
-    {
-        
-        if (isBoosting)
-        {
-            Debug.Log("BOOST ACTIVATED! Current speed: " + carRb.linearVelocity.magnitude);
-
-            if (boostParticles != null && !boostParticles.isPlaying)
-                boostParticles.Play();
-
-            if (boostLight != null)
-                boostLight.enabled = true;
-        }
-        else
-        {
-            if (boostParticles != null && boostParticles.isPlaying)
-                boostParticles.Stop();
-
-            if (boostLight != null)
-                boostLight.enabled = false;
-        }
-    }
 
     void AnimateWheels()
     {

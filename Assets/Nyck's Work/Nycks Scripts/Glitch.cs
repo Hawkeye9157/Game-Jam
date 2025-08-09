@@ -85,9 +85,9 @@ public class Glitch : MonoBehaviour
             {
                 
                 Vector3 glitchDirection = new Vector3(
-                    Random.Range(-1f, 1f),
+                    Random.Range(-10f, 10f),
                     0,
-                     Random.Range(-1f, 1f)
+                     Random.Range(-10f, 10f)
                 ).normalized;
 
                 
