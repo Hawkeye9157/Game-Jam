@@ -9,7 +9,7 @@ public class CarDriverAI : MonoBehaviour
     [SerializeField] public float reachedTargetDistance = 5f;
     [SerializeField] public float reverseDistance = 10f;
     private int currentWaypoint = 0;
-    public bool allowedToMove = true;
+    public bool allowedToMove = false;
     public float glitchTimer;
     public float minGlitchTime = 1f;
     public float maxGlitchTime = 5f;
@@ -24,7 +24,8 @@ public class CarDriverAI : MonoBehaviour
         driver = GetComponent<CarDriver>();
     }
     private void Start()
-    {   
+    {
+        allowedToMove = false;
         glitchTimer = Random.Range(minGlitchTime, maxGlitchTime); 
 
     }

@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
+using System.Collections;
 
 
 public class GameManager : MonoBehaviour
@@ -27,24 +28,15 @@ public class GameManager : MonoBehaviour
     public Button restartButton;
     public Button quitButton;
 
+    [Header("Countdown Settings")]
+    public TMP_Text countdownText;
+    public float countdownDuration = 3f;
+
     private float currentLapTime;
     private int lapCount;
     private bool isRacing;
 
-
-    private string FormatPosition(int pos)
-    {
-        switch (pos)
-        {
-            case 1: return "1st";
-            case 2: return "2nd";
-            case 3: return "3rd";
-            default: return $"{pos}th";
-        }
-    }
-
-
-
+    private bool isCountdownActive;
 
     private void Awake()
     {
@@ -62,6 +54,13 @@ public class GameManager : MonoBehaviour
         inGameUI.SetActive(false);
         gameEndUI.SetActive(false);
 
+        //countdown text
+        if (countdownText != null)
+        {
+            countdownText.gameObject.SetActive(false);
+        }
+
+
         SetGameState("MainMenu");
 
     }
@@ -72,7 +71,7 @@ public class GameManager : MonoBehaviour
         if (isRacing)
         {
             currentLapTime += Time.deltaTime;
-            speedCounter.text = speed.ToString();
+            speedCounter.text = $"{speed:0} km/h";
             UpdateLapTimeDisplay();
 
         }
@@ -97,6 +96,13 @@ public class GameManager : MonoBehaviour
         inGameUI.SetActive(false);
         gameEndUI.SetActive(false);
 
+        //countdown 
+        if (countdownText != null)
+        {
+            countdownText.gameObject.SetActive(false);
+        }
+
+
         switch (state)
         {
             case "MainMenu":
@@ -107,7 +113,9 @@ public class GameManager : MonoBehaviour
             case "InGame":
                 inGameUI.SetActive(true);
                 Time.timeScale = 1;
-                StartNewRace();
+
+                StartCoroutine(StartCountdown());
+
                 break;
 
             case "GameEnd":
@@ -117,6 +125,60 @@ public class GameManager : MonoBehaviour
                 break;
         }
     }
+
+
+    private IEnumerator StartCountdown() 
+    {
+        if (countdownText != null)
+        {
+            countdownText.gameObject.SetActive(true);
+            isCountdownActive = true;
+        }
+
+        //ai movement
+        SetAICarsEnabled(false);
+
+        // Disable car control
+        if (CarController != null)
+            CarController.SetControlEnabled(false);
+
+        // Countdown sequence
+        float timer = countdownDuration;
+        while (timer > 0)
+        {
+            countdownText.text = Mathf.Ceil(timer).ToString();
+            timer -= Time.deltaTime;
+            yield return null;
+        }
+
+        // GO! message
+        countdownText.text = "GO!";
+        yield return new WaitForSeconds(1f);
+
+        // Hide countdown
+        if (countdownText != null)
+            countdownText.gameObject.SetActive(false);
+
+        isCountdownActive = false;
+        SetAICarsEnabled(true);
+
+        // Enable car control and start race
+        if (CarController != null)
+            CarController.SetControlEnabled(true);
+
+        StartNewRace(); 
+    }
+
+    private void SetAICarsEnabled(bool enabled) // ADDED: New method
+    {
+        CarDriverAI[] aiCars = FindObjectsOfType<CarDriverAI>();
+        foreach (CarDriverAI ai in aiCars)
+        {
+            ai.allowedToMove = enabled;
+        }
+    }
+
+
 
     private void StartNewRace()
     {
@@ -140,7 +202,9 @@ public class GameManager : MonoBehaviour
 
     private string FormatTime(float time)
     {
-        return $"{time:00.00}s";
+        int minutes = (int)time / 60;
+        float seconds = time % 60;
+        return $"{minutes:00}:{seconds:00.00}";
     }
 
     public void StartGame() => SetGameState("InGame");

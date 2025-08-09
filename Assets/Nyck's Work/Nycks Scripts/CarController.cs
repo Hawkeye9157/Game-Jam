@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CarController : MonoBehaviour
+public class CarController : MonoBehaviour 
 {
+    
+
     public enum Axel
     {
         Front,
@@ -38,6 +40,9 @@ public class CarController : MonoBehaviour
     public float currentSpeed {  get; private set; }
     public static float CurrentCarSpeed { get; private set; }
 
+    //kay's stuff for start game
+    public bool controlsEnabled = true;
+
 
     private void Start()
     {
@@ -45,10 +50,17 @@ public class CarController : MonoBehaviour
         carRb.centerOfMass = _centerOfMass;
         currentAcceleration = normalMaxAcceleration;
 
+    } 
+
+    //kays's method
+    public void SetControlEnabled(bool enabled)
+    {
+        controlsEnabled = enabled;
     }
 
     private void Update()
     {
+        if (!controlsEnabled) return;
         GetInputs();
         AnimateWheels();
         UpdateSpeed();
