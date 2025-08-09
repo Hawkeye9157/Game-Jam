@@ -88,15 +88,17 @@ public class Glitch : MonoBehaviour
                     Instantiate(glitchParticles, bodies.position, Quaternion.identity);
                 }
 
-                if (glitchSound != null)
-                {
-                    AudioSource.PlayClipAtPoint(glitchSound.clip, bodies.position);
-                }
 
-                // Trigger camera effect
-                if (cameraGlitch != null)
-                    cameraGlitch.TriggerGlitch();
+                
             }
         }
+            // Trigger camera effect
+                if (cameraGlitch != null)
+                    cameraGlitch.TriggerGlitch();
+
+                if (glitchSound != null)
+                {
+                    glitchSound.Play();
+                }
     }
 }
