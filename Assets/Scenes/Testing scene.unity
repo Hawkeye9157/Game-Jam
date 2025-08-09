@@ -174,7 +174,7 @@ WheelCollider:
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.8
     m_AsymptoteValue: 0.5
-    m_Stiffness: 0.5
+    m_Stiffness: 1.5
   m_SidewaysFriction:
     m_ExtremumSlip: 0.2
     m_ExtremumValue: 1
@@ -269,7 +269,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 5000
   m_UseColorTemperature: 1
-  m_BoundingSphereOverride: {x: 1.675e-42, y: 2.524355e-29, z: 0, w: 2.75551e-40}
+  m_BoundingSphereOverride: {x: 1.8062698e+28, y: 2.4845996e+27, z: 4.1931302e+21, w: 1.8395218e+25}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ForceVisible: 0
@@ -487,7 +487,7 @@ WheelCollider:
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.8
     m_AsymptoteValue: 0.5
-    m_Stiffness: 0.5
+    m_Stiffness: 1.5
   m_SidewaysFriction:
     m_ExtremumSlip: 0.2
     m_ExtremumValue: 1
@@ -971,11 +971,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab4b8924c66cff0429d58c665a40c710, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  normalMaxAcceleration: 100
+  normalMaxAcceleration: 50
   breakAcceleration: 100
-  boostMultiplier: 500
+  boostMultiplier: 100
   turnSensitivity: 1
   maxSteerAngle: 30
+  speedMultiplier: 1000
   _centerOfMass: {x: 0, y: -2, z: 0}
   wheels:
   - wheelModel: {fileID: 390230347}
@@ -990,6 +991,8 @@ MonoBehaviour:
   - wheelModel: {fileID: 442894508}
     wheelCollider: {fileID: 733830501}
     axel: 1
+  wheelSmokeParticles: []
+  controlsEnabled: 1
 --- !u!4 &1190947949 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2082061792772580833, guid: 07f9514859838be488c0cdcfc1215750, type: 3}
@@ -1029,6 +1032,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c1ba0244cc75024587b26aeca90e12d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cameraGlitch: {fileID: 0}
   glitchForce: 10
   minInterval: 1
   maxInterval: 3

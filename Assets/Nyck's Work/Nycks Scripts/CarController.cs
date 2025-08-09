@@ -25,6 +25,7 @@ public class CarController : MonoBehaviour
     public float boostMultiplier;
     public float turnSensitivity = 1.0f;
     public float maxSteerAngle = 30.0f;
+    public float speedMultiplier = 1.0f;
 
     public Vector3 _centerOfMass;
 
@@ -99,15 +100,24 @@ public class CarController : MonoBehaviour
     void Move()
     {
 
-        currentAcceleration = isBoosting ? normalMaxAcceleration * boostMultiplier : normalMaxAcceleration;
-        
-        
+        currentAcceleration = isBoosting ?
+      normalMaxAcceleration * boostMultiplier :
+      normalMaxAcceleration * speedMultiplier;
+
+        // Calculate torque based on current speed (better acceleration curve)
+        float speedFactor = Mathf.Clamp(1 - (carRb.linearVelocity.magnitude / 50f), 0.1f, 1f);
+        float finalTorque = moveInput * currentAcceleration * speedFactor;
+
         foreach (var wheel in wheels)
         {
-            
-            wheel.wheelCollider.motorTorque = moveInput * 1000f * currentAcceleration;
-        }
+            wheel.wheelCollider.motorTorque = finalTorque;
 
+            // Adjust wheel physics for better grip
+            WheelFrictionCurve forwardFriction = wheel.wheelCollider.forwardFriction;
+            forwardFriction.stiffness = isBoosting ? 3f : 1.5f;
+            wheel.wheelCollider.forwardFriction = forwardFriction;
+
+        }
 
         Debug.Log("BOOST ACTIVATED! Current speed: " + carRb.linearVelocity.magnitude);
     }
