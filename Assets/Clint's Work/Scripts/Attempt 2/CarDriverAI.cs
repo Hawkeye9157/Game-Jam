@@ -19,14 +19,14 @@ public class CarDriverAI : MonoBehaviour
     private Vector3 targetPosition;
 
     
-
     private void Awake()
     {
         driver = GetComponent<CarDriver>();
     }
     private void Start()
-    {
-        glitchTimer = Random.Range(minGlitchTime, maxGlitchTime);
+    {   
+        glitchTimer = Random.Range(minGlitchTime, maxGlitchTime); 
+
     }
     private void Update()
     {
@@ -95,6 +95,7 @@ public class CarDriverAI : MonoBehaviour
             driver.ClearTurnSpeed();
         }
         driver.SetInputs(forwardAmount, turnAmount);
+
     }
     private void ApplyGlitch()
     {

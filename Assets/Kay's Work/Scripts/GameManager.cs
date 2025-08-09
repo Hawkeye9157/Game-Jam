@@ -3,9 +3,12 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
 
+
 public class GameManager : MonoBehaviour
 {
-    public static GameManager Instance;
+    public static GameManager Instance; 
+    public CarController CarController;
+
 
     [Header("UI Panels")]
     public GameObject mainMenuUI;
@@ -15,6 +18,8 @@ public class GameManager : MonoBehaviour
     [Header("In-Game UI")]
     public TMP_Text lapTimeText;
     public TMP_Text lapCountText;
+    public TMP_Text speedCounter;
+    public TMP_Text positionText;
 
     [Header("Game End UI")]
     public TMP_Text winLoseText;
@@ -25,6 +30,21 @@ public class GameManager : MonoBehaviour
     private float currentLapTime;
     private int lapCount;
     private bool isRacing;
+
+
+    private string FormatPosition(int pos)
+    {
+        switch (pos)
+        {
+            case 1: return "1st";
+            case 2: return "2nd";
+            case 3: return "3rd";
+            default: return $"{pos}th";
+        }
+    }
+
+
+
 
     private void Awake()
     {
@@ -37,22 +57,27 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+
         mainMenuUI.SetActive(false);
         inGameUI.SetActive(false);
         gameEndUI.SetActive(false);
 
         SetGameState("MainMenu");
+
     }
 
     private void Update()
     {
+        float speed = CarController.CurrentCarSpeed;
         if (isRacing)
         {
             currentLapTime += Time.deltaTime;
+            speedCounter.text = speed.ToString();
             UpdateLapTimeDisplay();
-            
+
         }
     }
+
 
     public void RegisterLap()
     {
@@ -120,5 +145,11 @@ public class GameManager : MonoBehaviour
 
     public void StartGame() => SetGameState("InGame");
     public void RestartGame() => SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-    public void QuitGame() => Application.Quit();
+    public void QuitGame()
+    {
+        Debug.Log("is quitting?");
+        Application.Quit();
+
+    }
+
 }
