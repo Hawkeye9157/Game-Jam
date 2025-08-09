@@ -169,16 +169,17 @@ public class GameManager : MonoBehaviour
 
         // Countdown sequence
         float timer = countdownDuration;
+        int lastIntegerValue = Mathf.CeilToInt(timer) + 1;
         while (timer > 0)
         {
+            int currentIntegerValue = Mathf.CeilToInt(timer);
 
-            if (countdownAudio != null)
-                alreadyplayed = true;
-                countdownAudio.Play();
-
-            if (alreadyplayed = true)
+            if (currentIntegerValue != lastIntegerValue)
             {
-                countdownAudio.Stop();
+                if (countdownAudio != null)
+                    countdownAudio.Play();
+
+                lastIntegerValue = currentIntegerValue;
             }
 
             countdownText.text = Mathf.Ceil(timer).ToString();
