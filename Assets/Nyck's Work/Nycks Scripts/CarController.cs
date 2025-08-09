@@ -84,10 +84,7 @@ public class CarController : MonoBehaviour
         }
 
 
-        if (isBoosting)
-        {
-            Debug.Log("BOOST ACTIVATED! Current speed: " + carRb.linearVelocity.magnitude);
-        }
+        Debug.Log("BOOST ACTIVATED! Current speed: " + carRb.linearVelocity.magnitude);
     }
 
     void Steer()
@@ -111,6 +108,20 @@ public class CarController : MonoBehaviour
             {
                 wheel.wheelCollider.brakeTorque = breakAcceleration * 10000;
             }
+
+            if(carRb.linearVelocity.magnitude < 0.1f)
+            {
+                carRb.linearVelocity = Vector3.zero;
+                carRb.angularVelocity = Vector3.zero;
+
+               
+                foreach (var wheel in wheels)
+                {
+                    wheel.wheelCollider.brakeTorque = Mathf.Infinity;
+                    wheel.wheelCollider.motorTorque = 0f;
+                }
+
+            }
         }
         else
         {
@@ -123,7 +134,7 @@ public class CarController : MonoBehaviour
 
     void UpdateSpeed()
     {
-        currentSpeed = carRb.linearVelocity.magnitude;
+        currentSpeed = carRb.linearVelocity.magnitude < 0.1f ? 0f : carRb.linearVelocity.magnitude; 
         CurrentCarSpeed = currentSpeed;
         
     }
