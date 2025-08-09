@@ -88,6 +88,12 @@ public class CarDriverAI : MonoBehaviour
             currentWaypoint++;
             if (currentWaypoint == waypoints.Count) currentWaypoint = 0;
         }
+        float dontTurnDot = .995f - .015f * (Mathf.Clamp(distanceToTarget, 0f, 100f) / 100f);
+        if (dot > dontTurnDot)
+        {
+            turnAmount = 0f;
+            driver.ClearTurnSpeed();
+        }
         driver.SetInputs(forwardAmount, turnAmount);
     }
     private void ApplyGlitch()
