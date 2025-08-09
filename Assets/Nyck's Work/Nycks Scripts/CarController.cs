@@ -41,6 +41,8 @@ public class CarController : MonoBehaviour
     public static float CurrentCarSpeed { get; private set; }
 
     //kay's stuff for start game
+    [Header("Particles")]
+    public ParticleSystem[] wheelSmokeParticles;
     public bool controlsEnabled = true;
 
 
@@ -64,6 +66,17 @@ public class CarController : MonoBehaviour
         GetInputs();
         AnimateWheels();
         UpdateSpeed();
+
+        // Control smoke particles
+        if (wheelSmokeParticles != null && wheelSmokeParticles.Length > 0)
+        {
+            bool shouldEmit = currentSpeed > 10f && Mathf.Abs(steerInput) > 0.3f;
+            foreach (var smoke in wheelSmokeParticles)
+            {
+                var emission = smoke.emission;
+                emission.enabled = shouldEmit;
+            }
+        }
 
     }
 

@@ -32,6 +32,16 @@ public class GameManager : MonoBehaviour
     public TMP_Text countdownText;
     public float countdownDuration = 3f;
 
+    [Header("Audio")]
+    public AudioSource backgroundAudio;
+    public AudioSource countdownAudio;
+    public AudioSource loseAudio;
+    public AudioSource mainMenuAudio;
+
+    [Header("Particles")]
+    public ParticleSystem confettiParticles;
+
+    [Header ("Lap")]
     private float currentLapTime;
     private int lapCount;
     private bool isRacing;
@@ -102,12 +112,20 @@ public class GameManager : MonoBehaviour
             countdownText.gameObject.SetActive(false);
         }
 
+        // Stop all audio first
+        if (mainMenuAudio != null && mainMenuAudio.isPlaying)
+            mainMenuAudio.Stop();
+        if (backgroundAudio != null && backgroundAudio.isPlaying)
+            backgroundAudio.Stop();
 
         switch (state)
         {
             case "MainMenu":
                 mainMenuUI.SetActive(true);
                 Time.timeScale = 0;
+
+                if (mainMenuAudio != null && !mainMenuAudio.isPlaying)
+                    mainMenuAudio.Play();
                 break;
 
             case "InGame":
@@ -116,12 +134,19 @@ public class GameManager : MonoBehaviour
 
                 StartCoroutine(StartCountdown());
 
+                if (backgroundAudio != null && !backgroundAudio.isPlaying)
+                    backgroundAudio.Play();
+
                 break;
 
             case "GameEnd":
                 gameEndUI.SetActive(true);
                 Time.timeScale = 0;
                 finalLapTimeText.text = FormatTime(currentLapTime);
+
+                if (backgroundAudio != null && backgroundAudio.isPlaying)
+                    backgroundAudio.Stop();
+
                 break;
         }
     }
@@ -146,6 +171,16 @@ public class GameManager : MonoBehaviour
         float timer = countdownDuration;
         while (timer > 0)
         {
+
+            if (countdownAudio != null)
+                alreadyplayed = true;
+                countdownAudio.Play();
+
+            if (alreadyplayed = true)
+            {
+                countdownAudio.Stop();
+            }
+
             countdownText.text = Mathf.Ceil(timer).ToString();
             timer -= Time.deltaTime;
             yield return null;
@@ -160,6 +195,8 @@ public class GameManager : MonoBehaviour
             countdownText.gameObject.SetActive(false);
 
         isCountdownActive = false;
+        if (countdownAudio != null && countdownAudio.isPlaying)
+            countdownAudio.Stop();
         SetAICarsEnabled(true);
 
         // Enable car control and start race
@@ -191,8 +228,23 @@ public class GameManager : MonoBehaviour
 
     private void EndGame()
     {
+
         isRacing = false;
+
+        // Play confetti
+        if (confettiParticles != null)
+            confettiParticles.Play();
+
         SetGameState("GameEnd");
+
+
+
+        //need player position in order to add this 
+        //if you win(1st place) win sound plays- change text
+        //if you lose(else) lose sound(cant win them all) plays- change text
+        /*// Play lose audio
+        if (loseAudio != null)
+            loseAudio.Play();*/
     }
 
     private void UpdateLapTimeDisplay()

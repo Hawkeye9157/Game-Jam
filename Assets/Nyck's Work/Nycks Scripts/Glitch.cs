@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class Glitch : MonoBehaviour
 {
+    public CameraGlitchController cameraGlitch;
+
     [Header("Glitch Settings")]
     public float glitchForce = 10f;
     public float minInterval = 1f;
@@ -18,8 +20,10 @@ public class Glitch : MonoBehaviour
     private float nextGlitchTime;
     private List<Rigidbody> allRigidbodies = new List<Rigidbody>();
 
+
+
     void Start()
-    {
+    { 
         // Initialize with first glitch time
         SetNextGlitchTime();
 
@@ -88,6 +92,10 @@ public class Glitch : MonoBehaviour
                 {
                     AudioSource.PlayClipAtPoint(glitchSound.clip, bodies.position);
                 }
+
+                // Trigger camera effect
+                if (cameraGlitch != null)
+                    cameraGlitch.TriggerGlitch();
             }
         }
     }

@@ -18,7 +18,10 @@ public class CarDriverAI : MonoBehaviour
     private CarDriver driver;
     private Vector3 targetPosition;
 
-    
+    //kay's stuff
+    [Header("Particles")]
+    public ParticleSystem[] wheelSmokeParticles; 
+
     private void Awake()
     {
         driver = GetComponent<CarDriver>();
@@ -40,6 +43,17 @@ public class CarDriverAI : MonoBehaviour
                 ApplyGlitch();
             }
             Move();
+
+            //smoke
+            if (wheelSmokeParticles != null && wheelSmokeParticles.Length > 0)
+            {
+                bool shouldEmit = driver.GetSpeed() > 5f;
+                foreach (var smoke in wheelSmokeParticles)
+                {
+                    var emission = smoke.emission;
+                    emission.enabled = shouldEmit;
+                }
+            }
         }
         
     }
