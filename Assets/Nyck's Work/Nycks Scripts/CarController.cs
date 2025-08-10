@@ -122,7 +122,7 @@ public class CarController : MonoBehaviour
 
         }
 
-        Debug.Log("BOOST ACTIVATED! Current speed: " + carRb.linearVelocity.magnitude);
+        //Debug.Log("BOOST ACTIVATED! Current speed: " + carRb.linearVelocity.magnitude);
     }
 
     void Steer()

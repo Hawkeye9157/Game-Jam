@@ -89,6 +89,7 @@ public class GameManager : MonoBehaviour
             //get player position
             if (checkpointMain != null && CarController != null)
             {
+                Debug.Log("getting player position");
                 int position = checkpointMain.GetPlayerPosition();
                 positionText.text = GetPositionSuffix(position);
             }
@@ -98,6 +99,7 @@ public class GameManager : MonoBehaviour
 
     private string GetPositionSuffix(int position)
     {
+        Debug.Log("position: " + position);
         switch (position)
         {
             case 1: return position + "st";
@@ -225,7 +227,7 @@ public class GameManager : MonoBehaviour
         StartNewRace(); 
     }
 
-    private void SetAICarsEnabled(bool enabled) // ADDED: New method
+    private void SetAICarsEnabled(bool enabled) 
     {
         CarDriverAI[] aiCars = FindObjectsOfType<CarDriverAI>();
         foreach (CarDriverAI ai in aiCars)
@@ -254,17 +256,21 @@ public class GameManager : MonoBehaviour
         if (confettiParticles != null)
             confettiParticles.Play();
 
-      /*  int finalPosition = checkpointMain.GetPlayerPosition();
+        //fix logic cause it breaks the end game funciton
+/*
+        int finalPosition = checkpointMain.GetPlayerPosition();
         bool isWinner = (finalPosition == 1);
 
         // Set win/lose text and audio
+
         winLoseText.text = isWinner ? "YOU WIN!" : "YOU LOSE";
+        Debug.Log(winLoseText.text);
         if (isWinner && winAudio != null)
             winAudio.Play();
         else if (!isWinner && loseAudio != null)
             loseAudio.Play();
-*/
 
+*/
 
         SetGameState("GameEnd");
     }
