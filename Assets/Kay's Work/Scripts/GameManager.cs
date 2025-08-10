@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
 using System.Collections;
+using System.Runtime.CompilerServices;
 
 
 public class GameManager : MonoBehaviour
@@ -48,8 +49,8 @@ public class GameManager : MonoBehaviour
     private bool isRacing;
 
     public bool isCountdownActive;
+    private bool isWinner;
 
-        
 
     private void Awake()
     {
@@ -256,24 +257,38 @@ public class GameManager : MonoBehaviour
         if (confettiParticles != null)
             confettiParticles.Play();
 
-        //fix logic cause it breaks the end game funciton
-/*
-        int finalPosition = checkpointMain.GetPlayerPosition();
-        bool isWinner = (finalPosition == 1);
+      /*  int finalPosition = checkpointMain.GetPlayerPosition();
+        isWinner = (finalPosition == 1);
 
-        // Set win/lose text and audio
-
-        winLoseText.text = isWinner ? "YOU WIN!" : "YOU LOSE";
-        Debug.Log(winLoseText.text);
-        if (isWinner && winAudio != null)
-            winAudio.Play();
-        else if (!isWinner && loseAudio != null)
-            loseAudio.Play();
-
+        if (isWinner)
+            WinGame();
+        else
+            LoseGame();
 */
 
         SetGameState("GameEnd");
     }
+
+    private void WinGame()
+    {
+        // Play confetti only on win
+        if (confettiParticles != null)
+            confettiParticles.Play();
+
+        winLoseText.text = "YOU WIN!";
+        if (winAudio != null)
+            winAudio.Play();
+    }
+
+    private void LoseGame()
+    {
+        winLoseText.text = "YOU LOSE";
+        if (loseAudio != null)
+            loseAudio.Play();
+    }
+
+
+
 
     private void UpdateLapTimeDisplay()
     {
