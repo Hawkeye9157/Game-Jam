@@ -7,10 +7,10 @@ public class CheckpointMain : MonoBehaviour
     [SerializeField] private Transform checkpointsParent;
     private List<CheckpointSingle> checkpointList;
     private Dictionary<Transform, int> playerCheckpointIndex;
-    private CarController player;
-    private CarDriverAI AI1;
-    private CarDriverAI AI2;
-    private CarDriverAI AI3;
+    public CarController player;
+    public CarDriverAI AI1;
+    public CarDriverAI AI2;
+    public CarDriverAI AI3;
 
     private void Start()
     {
@@ -34,16 +34,18 @@ public class CheckpointMain : MonoBehaviour
             playerCheckpointIndex[AI.transform] = 0;
         }
     }
-    private void Update()
-    {
-
-    }
+    
     public void PlayerThroughCheckpoint(CheckpointSingle checkpoint,CarController player)
     {
         int currentIndex = checkpointList.IndexOf(checkpoint);
         if(player.TryGetComponent<CarController>(out CarController controller))
         {
-
+            int count = checkpointList.IndexOf(checkpoint);
+            if(count == 0 && player.checkpointCount != 0)
+            {
+                player.lapCount++;
+            }
+            player.checkpointCount = count;
         }
     }
     public void PlayerThroughCheckpoint(CheckpointSingle checkpoint,CarDriverAI ai)
