@@ -48,6 +48,12 @@ public class GameManager : MonoBehaviour
     private int lapCount;
     private bool isRacing;
 
+    [Header("Funny Descriptions")]
+    public TMP_Text funnyDescriptionText;
+    public string[] winDescriptions;
+    public string[] loseDescriptions;
+
+    //bools
     public bool isCountdownActive;
     private bool isWinner;
 
@@ -168,7 +174,7 @@ public class GameManager : MonoBehaviour
             case "GameEnd":
                 gameEndUI.SetActive(true);
                 Time.timeScale = 0;
-                finalLapTimeText.text = FormatTime(currentLapTime);
+                finalLapTimeText.text = "Final Time: " + FormatTime(currentLapTime);
 
                 break;
         }
@@ -269,6 +275,9 @@ public class GameManager : MonoBehaviour
         if (confettiParticles != null)
             confettiParticles.Play();
 
+        if (funnyDescriptionText != null)
+            funnyDescriptionText.text = GetRandomDescription(winDescriptions);
+
         winLoseText.text = "YOU WIN!";
         if (winAudio != null)
             winAudio.Play();
@@ -277,12 +286,22 @@ public class GameManager : MonoBehaviour
     private void LoseGame()
     {
         winLoseText.text = "YOU LOSE";
+
+        if (funnyDescriptionText != null)
+            funnyDescriptionText.text = GetRandomDescription(loseDescriptions);
+
         if (loseAudio != null)
             loseAudio.Play();
         
     }
 
+    private string GetRandomDescription(string[] descriptions)
+    {
+        if (descriptions == null || descriptions.Length == 0)
+            return string.Empty;
 
+        return descriptions[Random.Range(0, descriptions.Length)];
+    }
 
     private void UpdateLapTimeDisplay()
     {
