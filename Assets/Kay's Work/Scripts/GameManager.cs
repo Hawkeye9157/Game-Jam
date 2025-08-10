@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance; 
     public CarController CarController;
-
+    private CheckpointMain checkpointMain;
 
     [Header("UI Panels")]
     public GameObject mainMenuUI;
@@ -36,6 +36,7 @@ public class GameManager : MonoBehaviour
     public AudioSource backgroundAudio;
     public AudioSource countdownAudio;
     public AudioSource loseAudio;
+    public AudioSource winAudio;
     public AudioSource mainMenuAudio;
 
     [Header("Particles")]
@@ -46,7 +47,9 @@ public class GameManager : MonoBehaviour
     private int lapCount;
     private bool isRacing;
 
-    private bool isCountdownActive;
+    public bool isCountdownActive;
+
+        
 
     private void Awake()
     {
@@ -70,7 +73,6 @@ public class GameManager : MonoBehaviour
             countdownText.gameObject.SetActive(false);
         }
 
-
         SetGameState("MainMenu");
 
     }
@@ -84,8 +86,27 @@ public class GameManager : MonoBehaviour
             speedCounter.text = $"{speed:0} km/h";
             UpdateLapTimeDisplay();
 
+            //get player position
+            if (checkpointMain != null && CarController != null)
+            {
+                int position = checkpointMain.GetPlayerPosition();
+                positionText.text = GetPositionSuffix(position);
+            }
+
         }
     }
+
+    private string GetPositionSuffix(int position)
+    {
+        switch (position)
+        {
+            case 1: return position + "st";
+            case 2: return position + "nd";
+            case 3: return position + "rd";
+            default: return position + "th";
+        }
+    }
+
 
 
     public void RegisterLap()
@@ -233,16 +254,19 @@ public class GameManager : MonoBehaviour
         if (confettiParticles != null)
             confettiParticles.Play();
 
+      /*  int finalPosition = checkpointMain.GetPlayerPosition();
+        bool isWinner = (finalPosition == 1);
+
+        // Set win/lose text and audio
+        winLoseText.text = isWinner ? "YOU WIN!" : "YOU LOSE";
+        if (isWinner && winAudio != null)
+            winAudio.Play();
+        else if (!isWinner && loseAudio != null)
+            loseAudio.Play();
+*/
+
+
         SetGameState("GameEnd");
-
-
-
-        //need player position in order to add this 
-        //if you win(1st place) win sound plays- change text
-        //if you lose(else) lose sound(cant win them all) plays- change text
-        /*// Play lose audio
-        if (loseAudio != null)
-            loseAudio.Play();*/
     }
 
     private void UpdateLapTimeDisplay()
