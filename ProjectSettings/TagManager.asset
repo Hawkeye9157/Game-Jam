@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 3
   tags:
   - AI
+  - Checkpoint
   layers:
   - Default
   - TransparentFX

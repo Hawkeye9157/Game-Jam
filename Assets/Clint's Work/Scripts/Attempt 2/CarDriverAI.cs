@@ -18,6 +18,9 @@ public class CarDriverAI : MonoBehaviour
     private CarDriver driver;
     private Vector3 targetPosition;
 
+    public int lapCount = 0;
+    public int checkpointCount = 0;
+
     //kay's stuff
     [Header("Particles")]
     public ParticleSystem[] wheelSmokeParticles; 

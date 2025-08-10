@@ -46,6 +46,9 @@ public class CarController : MonoBehaviour
     public ParticleSystem[] wheelSmokeParticles;
     public bool controlsEnabled = true;
 
+    public int lapCount = 0;
+    public int checkpointCount = 0;
+
 
     private void Start()
     {
