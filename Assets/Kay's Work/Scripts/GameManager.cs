@@ -252,21 +252,13 @@ public class GameManager : MonoBehaviour
 
     private void EndGame()
     {
-
         isRacing = false;
 
-        // Play confetti
-        if (confettiParticles != null)
-            confettiParticles.Play();
-
-      /*  int finalPosition = checkpointMain.GetPlayerPosition();
-        isWinner = (finalPosition == 1);
-
-        if (isWinner)
+        int finalPosition = checkpointMain.GetPlayerPosition();
+        if (finalPosition==1)
             WinGame();
         else
             LoseGame();
-*/
 
         SetGameState("GameEnd");
     }
@@ -287,8 +279,8 @@ public class GameManager : MonoBehaviour
         winLoseText.text = "YOU LOSE";
         if (loseAudio != null)
             loseAudio.Play();
+        
     }
-
 
 
 
