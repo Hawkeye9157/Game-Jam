@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance; 
     public CarController CarController;
-    private CheckpointMain checkpointMain;
+    public CheckpointMain checkpointMain;
 
     [Header("UI Panels")]
     public GameObject mainMenuUI;
@@ -87,12 +87,14 @@ public class GameManager : MonoBehaviour
             speedCounter.text = $"{speed:0} km/h";
             UpdateLapTimeDisplay();
 
+            Debug.Log("getting player position");
+            int position = checkpointMain.GetPlayerPosition();
+            Debug.Log("Player position: " + position);
+            positionText.text = GetPositionSuffix(position);
             //get player position
             if (checkpointMain != null && CarController != null)
             {
-                Debug.Log("getting player position");
-                int position = checkpointMain.GetPlayerPosition();
-                positionText.text = GetPositionSuffix(position);
+                
             }
 
         }

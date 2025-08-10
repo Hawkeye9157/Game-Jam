@@ -118,18 +118,15 @@ public class CarDriverAI : MonoBehaviour
     private void ApplyGlitch()
     {
         float chance = Random.Range(0f, 1f);
-        Debug.Log("Chance: " + chance);
         if(chance > successRate)
         {
             //glitch forward
             transform.position += transform.forward * 10.0f;
-            Debug.Log("Passed");
         }
         else
         {
             //glitch backward
             transform.position += -transform.forward * 10.0f;
-            Debug.Log("Failed");
         }
     }
 }

@@ -186,6 +186,7 @@ GameObject:
   - component: {fileID: 5720550935101384725}
   - component: {fileID: 1470412796260186855}
   - component: {fileID: 2172718752538816608}
+  - component: {fileID: 5637468243135464680}
   m_Layer: 0
   m_Name: AICar
   m_TagString: AI
@@ -253,6 +254,9 @@ MonoBehaviour:
   minGlitchTime: 1
   maxGlitchTime: 5
   successRate: 0.5
+  lapCount: 0
+  checkpointCount: 0
+  wheelSmokeParticles: []
 --- !u!33 &5720550935101384725
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -335,6 +339,28 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!64 &5637468243135464680
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7693580154760421293}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4300000, guid: 6df8799e47834944c85abaf3e659049d, type: 3}
 --- !u!1 &7880111798400073097
 GameObject:
   m_ObjectHideFlags: 0
