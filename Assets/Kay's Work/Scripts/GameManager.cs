@@ -144,9 +144,6 @@ public class GameManager : MonoBehaviour
                 Time.timeScale = 0;
                 finalLapTimeText.text = FormatTime(currentLapTime);
 
-                if (backgroundAudio != null && backgroundAudio.isPlaying)
-                    backgroundAudio.Stop();
-
                 break;
         }
     }
