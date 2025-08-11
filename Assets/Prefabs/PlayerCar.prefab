@@ -1298,11 +1298,11 @@ GameObject:
   - component: {fileID: 1214493362057109490}
   m_Layer: 0
   m_Name: PlayerCar
-  m_TagString: AI
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1438235989105328718
 Transform:
   m_ObjectHideFlags: 0
@@ -1311,7 +1311,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7431828911871982663}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.9996573, z: -0, w: -0.026178401}
+  m_LocalRotation: {x: 0, y: 0.99965733, z: -0, w: -0.026176924}
   m_LocalPosition: {x: 8.869999, y: -3.6099968, z: -123.21677}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1475,10 +1475,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cameraGlitch: {fileID: 0}
   glitchForce: 10
-  minInterval: 1
-  maxInterval: 3
+  minInterval: 10
+  maxInterval: 30
   maxGlitchDistance: 5
-  affectPlayers: 1
+  affectPlayers: 0
   glitchParticles: {fileID: 0}
   glitchSound: {fileID: 0}
 --- !u!1 &8598127726145327449
